@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Jobs API
+  version: 1.0.0
+servers:
+  - url: https://jobs-api-88qj.onrender.com
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                name: mahmoud
+                email: mahmoudsd153lk4@gmail.com
+                password: qwerty
+      responses:
+        "201":
+          description: User registered successfully
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                email: mahmoud@gmail.com
+                password: qwerty
+      responses:
+        "200":
+          description: User logged in successfully
+
+  /jobs:
+    get:
+      tags:
+        - Jobs
+      summary: Get all jobs
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of jobs
+
+    post:
+      tags:
+        - Jobs
+      summary: Create a new job
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: string
+                position:
+                  type: string
+                status:
+                  type: string
+              example:
+                company: apple
+                position: backend
+                status: pending
+      responses:
+        "201":
+          description: Job created
+
+  /jobs/{id}:
+    get:
+      tags:
+        - Jobs
+      summary: Get a job by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Job found
+
+    patch:
+      tags:
+        - Jobs
+      summary: Update a job
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                company: apple
+                position: backend
+      responses:
+        "200":
+          description: Job updated
+
+    delete:
+      tags:
+        - Jobs
+      summary: Delete a job
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Job deleted
